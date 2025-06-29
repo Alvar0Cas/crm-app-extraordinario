@@ -14,6 +14,6 @@ export type RootDrawerParamList = {
 
 //para exportarlo usamos primero el prefijo EXPORT TYPE 
 //luego DrawerNavProp o el nombre que queramos darle 
-// = Aqui luego igual, va el nombre del modulo que importamos
+// = Aqui luego igual, va el nombre del modulo que importamso
 //y dentro de <> debe ir lo que creamos
 export type DrawerNavProp = DrawerNavigationProp<RootDrawerParamList>;

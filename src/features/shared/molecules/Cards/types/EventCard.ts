@@ -1,5 +1,5 @@
-export interface ContactCardProps {
-  name: string;
-  imageUri?: string;
+export interface EventCardProps {
+  title: string;
+  date: string;
   onPress: () => void;
 }

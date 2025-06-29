@@ -1,5 +1,5 @@
-export interface NoteFieldProps{
-    note: string; 
-    onChangeText: (text:string)=>void;
-    onSave:()=>void;
+export interface NoteFieldProps {
+  note: string;
+  onChangeText: (text: string) => void;
+  onSave: () => void;
 }

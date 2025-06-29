@@ -6,8 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { RootDrawerParamList } from "./types/Drawer";
 
 //modulod e font awesome para los icones 
-import { FontAwesome5 } from '@expo/vector-icons';
-
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 //no sobrepase el notch la pantalla
 import { SafeAreaView } from "react-native-safe-area-context";
 
