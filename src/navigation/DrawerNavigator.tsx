@@ -6,7 +6,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { RootDrawerParamList } from "./types/Drawer";
 
 //modulod e font awesome para los icones 
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { FontAwesome5 } from '@expo/vector-icons';
+
 //no sobrepase el notch la pantalla
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -83,7 +84,8 @@ export default function DrawerNavigation() {
                     ),
                 }}
             />
-            <Drawer.Screen
+            {/* no se debe mostrar una lista como tal si no mas bien de las notifiacione suqe se surgan */}
+            {/* <Drawer.Screen
                 name="notificationsMain"
                 component={NotificationStackNavigator}
                 options={{
@@ -92,7 +94,7 @@ export default function DrawerNavigation() {
                         <FontAwesome5 name="bell" color={color} size={size} />
                     ),
                 }}
-            />
+            /> */}
             <Drawer.Screen
                 name="settingsMain"
                 component={SettingsStackNavigation}
