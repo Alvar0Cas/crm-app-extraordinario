@@ -33,7 +33,7 @@ El proyecto sigue una arquitectura basada en Feature-First combinada con los pri
 1. Clona este repositorio:
 
 bash
-git clone "AQUI VA TU URL DE REPO"
+git clone [https://github.com/Alvar0Cas/crm-app-extraordinario.git]
 
 
 2. Instala las dependencias:
