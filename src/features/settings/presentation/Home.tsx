@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import Dashboard from '../../shared/organisms/Dashboard/Dashboard';
 import { CalendarViewModel } from '../../calendar/presentation/viewmodel/CalendarViewModel';
 import { ContactViewModel } from '../../contactos/presentation/viewmodel/ContactViewModel';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerNavProp } from '../../../navigation/types/Drawer';
-
-
 
 function getRandomItems<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => 0.5 - Math.random());
@@ -37,8 +35,6 @@ export default function HomeScreen() {
   }));
 
   // Próximos 5 eventos ordenados por fecha de inicio
-  console.log('Eventos raw:', events);
-
   const upcomingEvents = events
     .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
     .slice(0, 5)
@@ -48,27 +44,38 @@ export default function HomeScreen() {
       onPress: () => console.log(`Ver evento ${event.title}`),
     }));
 
-  console.log('Eventos a mostrar:', upcomingEvents);
-
   return (
-    <View style={styles.container}>
-      <Dashboard
-        contacts={contactsForDashboard}
-        events={upcomingEvents}
-        notifications={[]}
-        onNavigateContacts={() => navigation.navigate('contactsMain')}
-        onNavigateCalendar={() => navigation.navigate('calendarMain')}
-        onNavigateNotifications={() => navigation.navigate('notificationsMain')}
-        onNavigateSettings={() => navigation.navigate('settingsMain')}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.screen}>
+      <View style={styles.container}>
+        <Dashboard
+          contacts={contactsForDashboard}
+          events={upcomingEvents}
+          notifications={[]}
+          onNavigateContacts={() => navigation.navigate('contactsMain')}
+          onNavigateCalendar={() => navigation.navigate('calendarMain')}
+          onNavigateNotifications={() => navigation.navigate('notificationsMain')}
+          onNavigateSettings={() => navigation.navigate('settingsMain')}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flexGrow: 1,
+    backgroundColor: '#fffff', 
     padding: 16,
-    backgroundColor: '#f0f0f0',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#1E1E1E', // contenedor 3d sombreado
+    borderRadius: 20,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
 });

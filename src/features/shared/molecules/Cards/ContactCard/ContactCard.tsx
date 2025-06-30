@@ -40,11 +40,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     maxWidth: '70%',
+    
   },
   nameText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333333',
+    color: '#fffff',
   },
   button: {
     backgroundColor: '#007AFF',

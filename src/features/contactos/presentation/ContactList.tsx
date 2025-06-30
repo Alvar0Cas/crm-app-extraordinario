@@ -14,7 +14,7 @@ export default function ContactListScreen() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007BFF" />
+        <ActivityIndicator size="large" color="#007AFF" />
       </View>
     );
   }
@@ -28,25 +28,43 @@ export default function ContactListScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <ContactList contacts={contacts} />
+    <View style={styles.screen}>
+      <View style={styles.container}>
+        <ContactList contacts={contacts} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#FFFFF', // LOS SCREEN SON LOS QUE ESTAN DEBAJO DEL CONTENEDOR 3D
+    padding: 16,
+  },
   container: {
     flex: 1,
+    backgroundColor: '#1E1E1E', // Gris oscuro para el contenedor
+    borderRadius: 20,
     padding: 16,
-    backgroundColor: '#f0f0f0',
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#FFFFFF', // Borde blanco sutil
   },
   loadingContainer: {
     flex: 1,
+    backgroundColor: '#121212',
     justifyContent: 'center',
     alignItems: 'center',
   },
   errorText: {
     fontSize: 16,
-    color: 'red',
+    color: '#FF3B30', // Rojo Apple para errores
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });

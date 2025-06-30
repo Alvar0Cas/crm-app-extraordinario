@@ -12,6 +12,7 @@ interface ContactDetailViewProps {
 
 export default function ContactDetailView({ contact }: ContactDetailViewProps) {
   const navigation = useNavigation();
+  
   const handleScheduleReminder = () => {
     Alert.alert('Recordatorio', 'Recordatorio agendado (dummy)');
   };
@@ -25,21 +26,22 @@ export default function ContactDetailView({ contact }: ContactDetailViewProps) {
       <ProfileHeader name={contact.name} imageUri={contact.imageUri} onBack={handleBack} />
 
       <View style={styles.section}>
-      <Text style={styles.label}>Nombre completo:</Text>
-      <Text style={styles.value}>{contact.name}</Text>
+        <Text style={styles.label}>Nombre completo:</Text>
+        <Text style={styles.value}>{contact.name}</Text>
 
-      <Text style={styles.label}>Primer Nombre:</Text>
-      <Text style={styles.value}>{contact.firstName}</Text>
+        <Text style={styles.label}>Primer Nombre:</Text>
+        <Text style={styles.value}>{contact.firstName}</Text>
 
-      <Text style={styles.label}>Apellido:</Text>
-      <Text style={styles.value}>{contact.lastName}</Text>
+        <Text style={styles.label}>Apellido:</Text>
+        <Text style={styles.value}>{contact.lastName}</Text>
 
-      <Text style={styles.label}>Tipo de Contacto:</Text>
-      <Text style={styles.value}>{contact.contactType}</Text>
+        <Text style={styles.label}>Tipo de Contacto:</Text>
+        <Text style={styles.value}>{contact.contactType}</Text>
 
-      <Text style={styles.label}>Es favorito:</Text>
-      <Text style={styles.value}>{contact.isFavorite ? '❤️' : '🤍'}</Text>
-    </View>
+        <Text style={styles.label}>Es favorito:</Text>
+        <Text style={styles.value}>{contact.isFavorite ? '❤️' : '🤍'}</Text>
+      </View>
+
       <Button onClick={handleScheduleReminder} style={styles.button}>
         <Text style={styles.buttonText}>Agendar recordatorio</Text>
       </Button>
@@ -50,33 +52,30 @@ export default function ContactDetailView({ contact }: ContactDetailViewProps) {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#1E1E1E', // Fondo oscuro
     gap: 24,
   },
   section: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#1E1E1E', // Tarjeta gris oscuro
     padding: 16,
     borderRadius: 12,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
     gap: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333333',
+    borderWidth: 1,
+    borderColor: '#FFFFFF', // Borde blanco opcional
   },
   label: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#555555',
+    color: '#FFFFFF', // Texto blanco
   },
   value: {
     fontSize: 16,
-    color: '#000000',
+    color: '#DDDDDD', // Texto gris claro
   },
   button: {
     backgroundColor: '#007AFF',

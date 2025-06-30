@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator, Text, Button, Alert, ScrollView, Platform, KeyboardAvoidingView,} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackCalendarParamList } from '../../../navigation/Calendar/types/types';
@@ -28,7 +37,6 @@ export default function EventDetailScreen() {
   } = CalendarViewModel();
 
   const { contacts, isLoading: contactsLoading, error: contactsError } = ContactViewModel();
-
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
@@ -84,10 +92,16 @@ export default function EventDetailScreen() {
         style={styles.flex}
       >
         <View style={styles.scrollContent}>
-          <EventDetailView event={selectedEvent} />
-          <View style={styles.actions}>
-            <Button title="Editar" onPress={() => setIsModalVisible(true)} />
-            <Button title="Eliminar" color="red" onPress={handleDelete} />
+          <View style={styles.card}>
+            <EventDetailView event={selectedEvent} />
+            <View style={styles.actions}>
+              <TouchableOpacity style={styles.editButton} onPress={() => setIsModalVisible(true)}>
+                <Text style={styles.buttonText}>Editar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+                <Text style={styles.buttonText}>Eliminar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -109,13 +123,24 @@ export default function EventDetailScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#ffff',
   },
   flex: {
     flex: 1,
   },
   scrollContent: {
     padding: 20,
+    flex: 1,
+  },
+  card: {
+    backgroundColor: '#1E1E1E',
+    borderRadius: 20,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
   errorText: {
     marginTop: 50,
@@ -129,4 +154,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     gap: 12,
   },
+  editButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  deleteButton: {
+    backgroundColor: '#FF3B30',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16,
+  },
 });
+

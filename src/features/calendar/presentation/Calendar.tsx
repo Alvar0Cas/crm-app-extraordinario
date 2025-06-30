@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { View, StyleSheet, Button, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, Button, KeyboardAvoidingView, Platform, TouchableOpacity, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
-
 
 import CalendarPanel from '../../shared/organisms/Calendar/CalendarPanel/CalendarPanel';
 import { CalendarViewModel } from './viewmodel/CalendarViewModel';
@@ -26,18 +25,17 @@ export default function CalendarScreen() {
     }, [])
   );
 
-const handleSubmitEvent = async (newEvent: CalendarEvent) => {
-  try {
-    const { eventId, notificationId } = await createEvent(newEvent);
-    console.log('Evento creado con ID:', eventId);
-    console.log('Notificación creada con ID:', notificationId);
-    await fetchEvents();
-    setIsModalVisible(false);
-  } catch (error) {
-    Alert.alert('Error', 'No se pudo crear el evento');
-  }
-};
-
+  const handleSubmitEvent = async (newEvent: CalendarEvent) => {
+    try {
+      const { eventId, notificationId } = await createEvent(newEvent);
+      console.log('Evento creado con ID:', eventId);
+      console.log('Notificación creada con ID:', notificationId);
+      await fetchEvents();
+      setIsModalVisible(false);
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo crear el evento');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -47,13 +45,9 @@ const handleSubmitEvent = async (newEvent: CalendarEvent) => {
       >
         <View style={styles.content}>
           <View style={styles.topBar}>
-            <Button
-              title="Nuevo +"
-              onPress={() => {
-                console.log('Abriendo modal de nuevo evento');
-                setIsModalVisible(true);
-              }}
-            />
+            <TouchableOpacity style={styles.addButton} onPress={() => setIsModalVisible(true)}>
+              <Text style={styles.addButtonText}>Nuevo +</Text>
+            </TouchableOpacity>
           </View>
 
           <CalendarPanel events={events} isLoading={isLoading} error={error} />
@@ -61,10 +55,7 @@ const handleSubmitEvent = async (newEvent: CalendarEvent) => {
 
         <EventFormModal
           visible={isModalVisible}
-          onClose={() => {
-            console.log('Modal cerrado sin guardar');
-            setIsModalVisible(false);
-          }}
+          onClose={() => setIsModalVisible(false)}
           onSubmit={handleSubmitEvent}
           contacts={contacts}
           contactsLoading={contactsLoading}
@@ -78,7 +69,7 @@ const handleSubmitEvent = async (newEvent: CalendarEvent) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fffff', // blanco
   },
   flex: {
     flex: 1,
@@ -86,9 +77,28 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#1E1E1E', // Fondo blanco del contenedor 3d sombreado
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
   topBar: {
     alignItems: 'flex-end',
     marginBottom: 16,
+  },
+  addButton: {
+    backgroundColor: 'red', 
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

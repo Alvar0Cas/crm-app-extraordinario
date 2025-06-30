@@ -6,7 +6,7 @@ import { ContactStackNavigationProp } from '../../../../../navigation/Contact/ty
 import { Contact } from '../../../../contactos/domain/entities/contact';
 
 interface ContactListProps {
-  contacts: Contact[];
+  contacts: Contact[]; 
 }
 
 export default function ContactList({ contacts }: ContactListProps) {
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F0F2F5',
+    backgroundColor: '#1E1E1E', // Fondo oscuro
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#333333',
+    color: '#FFFFFF', // Blanco
     marginBottom: 16,
   },
   separator: {

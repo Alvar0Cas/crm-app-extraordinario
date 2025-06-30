@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal,View,TextInput, Button, StyleSheet, Alert, Platform, KeyboardAvoidingView, } from 'react-native';
+import {
+  Modal,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Text from '../../../atoms/Text/Text';
@@ -99,7 +108,7 @@ const EventFormModal = ({
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
+    <Modal visible={visible} animationType="slide" transparent={false}>
       <SafeAreaView style={styles.modalBackground}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -120,6 +129,7 @@ const EventFormModal = ({
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Ej. Reunión de equipo"
+                placeholderTextColor="#AAAAAA"
               />
 
               <Text style={styles.label}>Ubicación</Text>
@@ -128,6 +138,7 @@ const EventFormModal = ({
                 value={location}
                 onChangeText={setLocation}
                 placeholder="Ej. Sala 4 o Zoom"
+                placeholderTextColor="#AAAAAA"
               />
 
               <Text style={styles.label}>Notas</Text>
@@ -137,6 +148,7 @@ const EventFormModal = ({
                 onChangeText={setNotes}
                 placeholder="Detalles adicionales..."
                 multiline
+                placeholderTextColor="#AAAAAA"
               />
 
               <Text style={styles.label}>Inicio</Text>
@@ -146,6 +158,7 @@ const EventFormModal = ({
                   setPickerType('start');
                   setPickerVisible(true);
                 }}
+                color="#007AFF"
               />
 
               <Text style={styles.label}>Fin</Text>
@@ -155,6 +168,7 @@ const EventFormModal = ({
                   setPickerType('end');
                   setPickerVisible(true);
                 }}
+                color="#007AFF"
               />
 
               <Text style={styles.label}>Contacto</Text>
@@ -169,11 +183,13 @@ const EventFormModal = ({
                 style={styles.dropdown}
                 dropDownContainerStyle={styles.dropdownContainer}
                 listMode="SCROLLVIEW"
+                textStyle={{ color: '#FFFFFF' }}
+                placeholderStyle={{ color: '#AAAAAA' }}
               />
 
               <View style={styles.buttonRow}>
-                <Button title="Cancelar" onPress={onClose} color="#888" />
-                <Button title="Guardar" onPress={handleSubmit} />
+                <Button title="Cancelar" onPress={onClose} color="#696666" />
+                <Button title="Guardar" onPress={handleSubmit} color="#007AFF" />
               </View>
 
               {eventToEdit && onDelete && (
@@ -199,16 +215,22 @@ const EventFormModal = ({
 
 export default EventFormModal;
 
-
 const styles = StyleSheet.create({
   modalBackground: {
     flex: 1,
-    backgroundColor: '#ffff',
+    backgroundColor: '#1E1E1E', // Fondo oscuro
   },
   modalWrapper: {
     flex: 1,
+    backgroundColor: '#1E1E1E', // Panel gris oscuro
+    margin: 16,
+    borderRadius: 20,
     padding: 16,
-    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -219,44 +241,46 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 18,
     textAlign: 'center',
-    color: '#000',
+    color: '#FFFFFF', // Blanco
   },
   label: {
     fontWeight: '600',
-    color: '#444',
+    color: '#FFFFFF', // Blanco
     fontSize: 14,
     marginBottom: 6,
     marginTop: 14,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: '#FFFFFF', // Borde blanco
     paddingHorizontal: 12,
     paddingVertical: Platform.OS === 'ios' ? 10 : 8,
-    borderRadius: 10,
+    borderRadius: 12,
     fontSize: 14,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#1E1E1E',
+    color: '#FFFFFF',
   },
   multilineInput: {
     height: 90,
     textAlignVertical: 'top',
   },
   dropdown: {
-    borderColor: '#DDD',
+    borderColor: '#FFFFFF', // Borde blanco
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingHorizontal: 10,
     height: 50,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#1E1E1E',
     marginTop: 4,
   },
   dropdownContainer: {
-    borderColor: '#DDD',
+    borderColor: '#FFFFFF', // Borde blanco
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 12,
     marginTop: 4,
-    backgroundColor: '#FFF',
+    backgroundColor: '#1E1E1E',
     zIndex: 2000,
+    
   },
   buttonRow: {
     flexDirection: 'row',

@@ -17,9 +17,7 @@ interface DashboardProps {
   onNavigateSettings: () => void;
 }
 
-
-export default function Dashboard({ contacts, events, notifications,}: DashboardProps) {
-    
+export default function Dashboard({ contacts, events, notifications }: DashboardProps) {
   const navigation = useNavigation<DrawerNavProp>();
 
   return (
@@ -60,36 +58,46 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     gap: 24,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#222222', // fondo gris obscuro
   },
   section: {
     gap: 12,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#FFFFFF', // borde blanco
+    padding: 12,
+    borderRadius: 8,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#FFFFFF', // titulo blanco
     marginBottom: 8,
+    backgroundColor: 'red', // barra rojo obscuro
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#007AFF', 
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 8,
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFFFFF', // texto blanco
     fontWeight: 'bold',
   },
   settingsButton: {
-    backgroundColor: '#555',
+    backgroundColor: '#696666', // gris medio
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
   },
   settingsButtonText: {
-    color: '#fff',
+    color: '#FFFFFF', // texto blanco
     fontWeight: 'bold',
   },
 });
