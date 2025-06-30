@@ -54,26 +54,4 @@ export class ContactService {
 };
 }
 
-  // Este metodo se habilitará para poder crear un contacto en un futuro
-  // async createContact(contact: ContactModel): Promise<void> {
-  //   await Contacts.addContactAsync({
-  //       [Contacts.Fields.Name]: contact.name,
-  //       contactType: 'company'
-  //   });
-  // }
-
-  //   async updateContact(contact: ContactModel): Promise<void> {
-  //       //esto es para vlidar si es indefinido
-  //   if (!contact.id) {
-  //       throw new Error('El contacto debe tener un ID para poder actualizarse.');
-  //   }
-  //   await Contacts.updateContactAsync({
-  //       id: contact.id, // Ahora Typescript sabe que no es undefined
-  //       [Contacts.Fields.Name]: contact.name,
-  //   });
-  // }
-
-  // async deleteContact(id: string): Promise<void> {
-  //   await Contacts.removeContactAsync(id);
-  // }
 }

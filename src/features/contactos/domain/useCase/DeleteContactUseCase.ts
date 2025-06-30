@@ -4,7 +4,7 @@ import { Contact } from "../entities/contact";
 
 //DEINFIR EL USE CASE, se hace através de una clase
 export class DeleteContactUseCase {
-    //inyectamos dependias para decirle al usecase que espero un repositorio
+    //inyectamos dependencias para decirle al usecase que espero un repositorio
     //lo hacemos através del constructor
     constructor (private repository: ContactRepository){}
 

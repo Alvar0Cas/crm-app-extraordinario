@@ -152,8 +152,8 @@ export class CalendarService {
       console.log('Notificación cancelada:', event.notificationId);
     }
 
-    // ✅ Notificación 10 minutos ANTES
-    const trigger = new Date(event.startDate.getTime() - 10 * 60 * 1000);
+    //Notificación 5 minutos ANTES
+    const trigger = new Date(event.startDate.getTime() - 5 * 60 * 1000);
     const newNotificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: event.title,
