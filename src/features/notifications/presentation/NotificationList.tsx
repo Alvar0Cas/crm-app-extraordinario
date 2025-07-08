@@ -11,29 +11,17 @@ export default function NotificationListScreen() {
   ];
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.container}>
-        <NotificationPanel notifications={dummyNotifications} />
-      </View>
+    <View style={styles.container}>
+      <NotificationPanel notifications={dummyNotifications} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: '#eaf4fb', // Fondo azul claro
-    padding: 16,
-  },
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // Fondo blanco
-    borderRadius: 20,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
   },
 });

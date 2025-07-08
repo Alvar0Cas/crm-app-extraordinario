@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fffff',
+    color: '#333333',
   },
   button: {
     backgroundColor: '#007AFF', // azul primario

@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Modal,
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  Alert,
-  Platform,
-  KeyboardAvoidingView,
+  Modal, View, TextInput, Button, StyleSheet, Alert,
+  Platform, KeyboardAvoidingView,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -39,8 +33,19 @@ const EventFormModal = ({
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [notes, setNotes] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date(Date.now() + 60 * 60 * 1000));
+
+  const getDefaultStartDate = () => {
+  const local = new Date();
+  local.setMinutes(0);
+  local.setSeconds(0);
+  local.setMilliseconds(0);
+  local.setHours(local.getHours() + 1);
+
+  return local;
+};
+
+  const [startDate, setStartDate] = useState(getDefaultStartDate());
+  const [endDate, setEndDate] = useState(new Date(getDefaultStartDate().getTime() + 60 * 60 * 1000));
   const [contactId, setContactId] = useState<string>('');
 
   const [pickerVisible, setPickerVisible] = useState(false);
@@ -51,12 +56,14 @@ const EventFormModal = ({
     contacts.map(contact => ({ label: contact.name, value: contact.id }))
   );
 
+  // Mantengo sincronizados los contactos
   useEffect(() => {
     setDropdownItems(
       contacts.map(contact => ({ label: contact.name, value: contact.id }))
     );
   }, [contacts]);
 
+  // Cuando se abre el modal, cargo evento a editar o limpio
   useEffect(() => {
     if (visible && eventToEdit) {
       setTitle(eventToEdit.title);
@@ -71,11 +78,12 @@ const EventFormModal = ({
   }, [visible, eventToEdit]);
 
   const resetForm = () => {
+    const defaultStart = getDefaultStartDate();
     setTitle('');
     setLocation('');
     setNotes('');
-    setStartDate(new Date());
-    setEndDate(new Date(Date.now() + 60 * 60 * 1000));
+    setStartDate(defaultStart);
+    setEndDate(new Date(defaultStart.getTime() + 60 * 60 * 1000));
     setContactId('');
   };
 
@@ -87,6 +95,12 @@ const EventFormModal = ({
   const handleSubmit = () => {
     if (!contactId) {
       Alert.alert('Contacto requerido', 'Por favor selecciona un contacto.');
+      return;
+    }
+
+    const nowPlusBuffer = Date.now() + 60 * 1000; // 1 minuto de tolerancia
+    if (startDate.getTime() <= nowPlusBuffer) {
+      Alert.alert('Fecha inválida', 'Selecciona una hora al menos 1 minuto en el futuro.');
       return;
     }
 
@@ -108,7 +122,7 @@ const EventFormModal = ({
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent={false}>
+    <Modal visible={visible} animationType="slide">
       <SafeAreaView style={styles.modalBackground}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -129,7 +143,6 @@ const EventFormModal = ({
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Ej. Reunión de equipo"
-                placeholderTextColor="#AAAAAA"
               />
 
               <Text style={styles.label}>Ubicación</Text>
@@ -138,7 +151,6 @@ const EventFormModal = ({
                 value={location}
                 onChangeText={setLocation}
                 placeholder="Ej. Sala 4 o Zoom"
-                placeholderTextColor="#AAAAAA"
               />
 
               <Text style={styles.label}>Notas</Text>
@@ -148,7 +160,6 @@ const EventFormModal = ({
                 onChangeText={setNotes}
                 placeholder="Detalles adicionales..."
                 multiline
-                placeholderTextColor="#AAAAAA"
               />
 
               <Text style={styles.label}>Inicio</Text>
@@ -158,7 +169,6 @@ const EventFormModal = ({
                   setPickerType('start');
                   setPickerVisible(true);
                 }}
-                color="#007AFF"
               />
 
               <Text style={styles.label}>Fin</Text>
@@ -168,7 +178,6 @@ const EventFormModal = ({
                   setPickerType('end');
                   setPickerVisible(true);
                 }}
-                color="#007AFF"
               />
 
               <Text style={styles.label}>Contacto</Text>
@@ -183,13 +192,11 @@ const EventFormModal = ({
                 style={styles.dropdown}
                 dropDownContainerStyle={styles.dropdownContainer}
                 listMode="SCROLLVIEW"
-                textStyle={{ color: '#FFFFFF' }}
-                placeholderStyle={{ color: '#AAAAAA' }}
               />
 
               <View style={styles.buttonRow}>
-                <Button title="Cancelar" onPress={onClose} color="#696666" />
-                <Button title="Guardar" onPress={handleSubmit} color="#007AFF" />
+                <Button title="Cancelar" onPress={onClose} color="#888" />
+                <Button title="Guardar" onPress={handleSubmit} />
               </View>
 
               {eventToEdit && onDelete && (
@@ -215,22 +222,16 @@ const EventFormModal = ({
 
 export default EventFormModal;
 
+
 const styles = StyleSheet.create({
   modalBackground: {
     flex: 1,
-    backgroundColor: '#1E1E1E', // Fondo oscuro
+    backgroundColor: '#ffff',
   },
   modalWrapper: {
     flex: 1,
-    backgroundColor: '#1E1E1E', // Panel gris oscuro
-    margin: 16,
-    borderRadius: 20,
     padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 5,
+    justifyContent: 'center',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -241,46 +242,44 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 18,
     textAlign: 'center',
-    color: '#FFFFFF', // Blanco
+    color: '#000',
   },
   label: {
     fontWeight: '600',
-    color: '#FFFFFF', // Blanco
+    color: '#444',
     fontSize: 14,
     marginBottom: 6,
     marginTop: 14,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#FFFFFF', // Borde blanco
+    borderColor: '#DDD',
     paddingHorizontal: 12,
     paddingVertical: Platform.OS === 'ios' ? 10 : 8,
-    borderRadius: 12,
+    borderRadius: 10,
     fontSize: 14,
-    backgroundColor: '#1E1E1E',
-    color: '#FFFFFF',
+    backgroundColor: '#F9F9F9',
   },
   multilineInput: {
     height: 90,
     textAlignVertical: 'top',
   },
   dropdown: {
-    borderColor: '#FFFFFF', // Borde blanco
+    borderColor: '#DDD',
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: 10,
     paddingHorizontal: 10,
     height: 50,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#F9F9F9',
     marginTop: 4,
   },
   dropdownContainer: {
-    borderColor: '#FFFFFF', // Borde blanco
+    borderColor: '#DDD',
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: 10,
     marginTop: 4,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#FFF',
     zIndex: 2000,
-    
   },
   buttonRow: {
     flexDirection: 'row',

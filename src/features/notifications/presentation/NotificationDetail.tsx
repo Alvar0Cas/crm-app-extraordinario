@@ -7,33 +7,19 @@ import NotificationDetailView from '../../shared/organisms/Notifications/Notifia
 type NotificationDetailRouteProp = RouteProp<StackNotificationsParamsList, 'notificationDetail'>;
 
 export default function NotificationDetailScreen() {
+  // Obtenemos el id desde la ruta
   const route = useRoute<NotificationDetailRouteProp>();
   const { id } = route.params;
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.container}>
-        <NotificationDetailView notificationId={id} />
-      </View>
+    <View style={styles.container}>
+      <NotificationDetailView notificationId={id} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: '#eaf4fb', // Fondo azul claro
-    padding: 16,
-  },
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // Fondo blanco
-    borderRadius: 20,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 5,
   },
 });

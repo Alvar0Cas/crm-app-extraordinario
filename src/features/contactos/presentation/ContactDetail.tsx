@@ -23,68 +23,35 @@ export default function ContactDetailScreen() {
   }, [id]);
 
   if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
-      </View>
-    );
+    return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
   if (error) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
+    return <Text style={styles.errorText}>{error}</Text>;
   }
 
   if (!selectedContact) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.errorText}>Contacto no encontrado.</Text>
-      </View>
-    );
+    return <Text style={styles.errorText}>Contacto no encontrado.</Text>;
   }
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.container}>
-        <ContactDetailView contact={selectedContact} />
-      </View>
+    <View style={styles.container}>
+      <ContactDetailView
+        contact={selectedContact}
+        onRefresh={() => fetchContactById(id)}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: '#FFFFF', // Fondo oscuro
-    padding: 16,
-  },
   container: {
     flex: 1,
-    backgroundColor: '#1E1E1E', // Contenedor gris oscuro 3D SOMBREADOOO
-    borderRadius: 20,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 6,
-    elevation: 5,
-    borderWidth: 1,
-    borderColor: '#FFFFFF', // Borde blanco
-  },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: '#121212', // Fondo oscuro
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   errorText: {
-    fontSize: 16,
-    color: '#FF3B30',
     textAlign: 'center',
-    paddingHorizontal: 20,
+    marginTop: 50,
+    fontSize: 16,
+    color: 'red',
   },
-
 });

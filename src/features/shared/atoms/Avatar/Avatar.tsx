@@ -1,34 +1,38 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+// Importo el tipo de propiedades que voy a recibir para el componente Avatar
 import { AvatarProps } from './types/types';
 
-export default function Avatar({ imageUri, initials = '', size = 50 }: AvatarProps) {
+// Componente Avatar que puede recibir una imagen, iniciales y tamaño
+export default function Avatar({ imageUri, initials = '', size = 50, style}: AvatarProps) {
   return (
-    <View style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }]}>
+    // El contenedor del avatar, le paso tamaño y lo hago circular
+    <View style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }, style]}>
       {imageUri ? (
-        <Image
-          source={{ uri: imageUri }}
-          style={[styles.image, { width: size, height: size, borderRadius: size / 2 }]}
-        />
+        // Si me pasan una imagen, la muestro aquí
+        <Image source={{ uri: imageUri }} style={[styles.image, { width: size, height: size, borderRadius: size / 2 }]} />
       ) : (
-        <Text style={[styles.initials, { fontSize: size / 2.5 }]}>{initials}</Text>
+        // Si no hay imagen, muestro las iniciales
+        <Text style={styles.initials}>{initials}</Text>
       )}
     </View>
   );
 }
 
+// Estilos que le doy al avatar
 const styles = StyleSheet.create({
   avatar: {
-    backgroundColor: '#007AFF', // Azul vivo para mantener consistencia con otros componentes
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    backgroundColor: '#A8DADC', // Color de fondo por defecto
+    justifyContent: 'center', // Centrado vertical
+    alignItems: 'center', // Centrado horizontal
+    overflow: 'hidden', // Para que nada se salga del borde circular
   },
   image: {
-    resizeMode: 'cover',
+    resizeMode: 'cover', // Que la imagen cubra todo el espacio sin deformarse
   },
   initials: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: '#FFFFFF', // Color de las iniciales
+    fontWeight: 'bold', // Que las iniciales se vean en negritas
+    fontSize: 18, // Tamaño del texto
   },
 });

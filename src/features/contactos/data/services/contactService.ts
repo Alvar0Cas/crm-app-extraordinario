@@ -10,48 +10,117 @@ export class ContactService {
     }
 
     const { data } = await Contacts.getContactsAsync({
-      fields: [Contacts.Fields.Name, Contacts.Fields.Image],
+      fields: [
+        Contacts.Fields.Name,
+        Contacts.Fields.Image,
+        Contacts.Fields.ContactType,
+        Contacts.Fields.FirstName,
+        Contacts.Fields.LastName,
+        Contacts.Fields.PhoneNumbers,
+        Contacts.Fields.Note, // Aquí puedes guardar prioridad como texto
+      ],
     });
-    console.log('Datos crudos desde expo-contacts:', data);
 
     return data
-    .filter(contact => contact.name)
-    .map(contact => ({
+      .filter(contact => contact.name)
+      .map(contact => ({
+        id: contact.id ?? '',
+        name: contact.name ?? 'Sin nombre',
+        firstName: contact.firstName ?? '',
+        lastName: contact.lastName ?? '',
+        contactType: contact.contactType ?? 'person',
+        imageAvailable: contact.imageAvailable ?? false,
+        imageUri: contact.image?.uri ?? '',
+        isFavorite: (contact as any).isFavorite ?? false,
+        lookupKey: (contact as any).lookupKey ?? '',
+        priority: (contact.note as any) ?? 'ninguna',
+        phoneNumbers: contact.phoneNumbers
+          ?.map(p => p.number)
+          .filter((n): n is string => typeof n === 'string') ?? [],
+        emails: [], // no se usan, pero se define vacío por consistencia
+      }));
+  }
+
+  async getContactById(id: string): Promise<ContactModel | null> {
+    const { data } = await Contacts.getContactsAsync({
+      fields: [
+        Contacts.Fields.Name,
+        Contacts.Fields.Image,
+        Contacts.Fields.ContactType,
+        Contacts.Fields.FirstName,
+        Contacts.Fields.LastName,
+        Contacts.Fields.PhoneNumbers,
+        Contacts.Fields.Note,
+      ],
+    });
+
+    const contact = data.find(c => c.id === id);
+    if (!contact) return null;
+
+    return {
       id: contact.id ?? '',
       name: contact.name ?? 'Sin nombre',
       firstName: contact.firstName ?? '',
       lastName: contact.lastName ?? '',
-      contactType: contact.contactType ?? '',
+      contactType: contact.contactType ?? 'person',
       imageAvailable: contact.imageAvailable ?? false,
-      imageUri: contact.image?.uri ?? undefined,
-      isFavorite: contact.isFavorite ?? false,
+      imageUri: contact.image?.uri ?? '',
+      isFavorite: (contact as any).isFavorite ?? false,
       lookupKey: (contact as any).lookupKey ?? '',
-    }));
+      priority: (contact.note as any) ?? 'ninguna',
+      phoneNumbers: contact.phoneNumbers
+        ?.map(p => p.number)
+        .filter((n): n is string => typeof n === 'string') ?? [],
+      emails: [],
+    };
   }
 
-  //esto lo implementamos de esta manera, puesto que expo-comntacts, no tiene un 
-  //punto exacto para consulta uno en especifico, por ello, se opta por consultar la lista y filtratlo segpun el id 
-  //y con ello simplemente se regresa ese mismo
- async getContactById(id: string): Promise<ContactModel | null> {
-  const { data } = await Contacts.getContactsAsync({
-    fields: [Contacts.Fields.Name, Contacts.Fields.Image],
-  });
+  async createContact(contact: ContactModel): Promise<void> {
+    await Contacts.addContactAsync({
+      [Contacts.Fields.Name]: contact.name,
+      [Contacts.Fields.FirstName]: contact.firstName,
+      [Contacts.Fields.LastName]: contact.lastName,
+      [Contacts.Fields.Note]: contact.priority ?? 'ninguna',
+      [Contacts.Fields.ContactType]: contact.contactType ?? 'person',
+      [Contacts.Fields.PhoneNumbers]: (contact.phoneNumbers ?? []).map(number => ({
+        number,
+        label: 'mobile',
+      })),
+    });
+  }
 
-  const contact = data.find(c => c.id === id);
+  async updateContact(contact: ContactModel): Promise<void> {
+    if (!contact.id) {
+      throw new Error('El contacto debe tener un ID para poder actualizarse.');
+    }
 
-  if (!contact) return null;
+    await Contacts.updateContactAsync({
+      id: contact.id,
+      [Contacts.Fields.Name]: contact.name,
+      [Contacts.Fields.FirstName]: contact.firstName,
+      [Contacts.Fields.LastName]: contact.lastName,
+      [Contacts.Fields.Note]: contact.priority ?? 'ninguna',
+      [Contacts.Fields.ContactType]: contact.contactType ?? 'person',
+      [Contacts.Fields.PhoneNumbers]: (contact.phoneNumbers ?? []).map(number => ({
+        number,
+        label: 'mobile',
+      })),
+    });
+  }
 
- return {
-  id: contact.id ?? '',
-  name: contact.name ?? 'Sin nombre',
-  firstName: (contact as any).firstName ?? 'No registrado',
-  lastName: (contact as any).lastName ?? 'No registrado',
-  contactType: (contact as any).contactType ?? 'Desconocido',
-  imageAvailable: contact.imageAvailable ?? false,
-  imageUri: contact.image?.uri ?? 'https://example.com/default-image.png',
-  isFavorite: (contact as any).isFavorite ?? false,
-  lookupKey: (contact as any).lookupKey ?? 'Sin clave',
-};
+  //buscar contacto 
+  async searchContacts(query: string): Promise<ContactModel[]> {
+  const contacts = await this.getContacts();
+  const lowerQuery = query.toLowerCase();
+
+  return contacts.filter(contact =>
+    contact.name.toLowerCase().includes(lowerQuery) ||
+    contact.phoneNumbers.some(number => number.includes(query))
+  );
 }
 
+
+  async deleteContact(id: string): Promise<void> {
+    await Contacts.removeContactAsync(id);
+  }
 }
