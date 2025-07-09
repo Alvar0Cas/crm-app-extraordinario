@@ -9,15 +9,18 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { CalendarViewModel } from './viewmodel/CalendarViewModel';
 import { ContactViewModel } from '../../contactos/presentation/viewmodel/ContactViewModel';
 import { useNotificationViewModel } from '../../notifications/presentation/viewmodels/notificationViewModel';
 import CalendarPanel from '../../shared/organisms/Calendar/CalendarPanel/CalendarPanel';
 import EventFormModal from '../../shared/organisms/Calendar/ModalEvent/ModalEvent';
 import { CalendarEvent } from '../domain/entities/event';
+import { useTheme } from '../../../common/hooks/theme';
 
 export default function CalendarScreen() {
+const theme = useTheme();
+  const navigation = useNavigation(); 
   const { events, isLoading, error, createEvent, fetchEvents } = CalendarViewModel();
   const { contacts, isLoading: contactsLoading, error: contactsError } = ContactViewModel();
   const { createNotification } = useNotificationViewModel();
@@ -40,16 +43,21 @@ export default function CalendarScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, {backgroundColor: theme.background}]}>
       <KeyboardAvoidingView
-        style={styles.flex}
+        style={[styles.flex, {backgroundColor: theme.background}]}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <View style={styles.content}>
+        <View style={[styles.content, {backgroundColor: theme.background}]}>
+          {/* 🔙 Botón de regresar */}
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Text style={[styles.backIcon, {color: theme.onBackground}]}>←</Text>
+          </TouchableOpacity>
+
           <View style={styles.header}>
-            <Text style={styles.title}>Calendario</Text>
-            <TouchableOpacity style={styles.addButton} onPress={() => setIsModalVisible(true)}>
-              <Text style={styles.addButtonText}>+ Nuevo</Text>
+            <Text style={[styles.title, {color: theme.onBackground}]}>Calendario</Text>
+            <TouchableOpacity style={[styles.addButton, {backgroundColor: theme.surface}]} onPress={() => setIsModalVisible(true)}>
+              <Text style={[styles.addButtonText, {color: theme.onSurface}]}>+ Nuevo</Text>
             </TouchableOpacity>
           </View>
 
@@ -102,5 +110,19 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 14,
+  },
+
+  // 🔙 Estilo para el botón de regresar
+  backButton: {
+    position: 'absolute',
+    top: -30,
+    left: 12,
+    zIndex: 10,
+    padding: 6,
+  },
+  backIcon: {
+    fontSize: 38,
+    color: '#007BFF',
+    fontWeight: '600',
   },
 });

@@ -4,6 +4,7 @@ import { EventType } from '../../../features/shared/organisms/Calendar/CalendarP
 import { useNavigation } from '@react-navigation/native';
 import { CalendarStackNavigationProp } from '../../../navigation/Calendar/types/types';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useTheme } from '../../hooks/theme';
 
 interface Props {
   visible: boolean;
@@ -14,45 +15,46 @@ interface Props {
 export default function DayEventsModal({ visible, events, onClose }: Props) {
   const navigation = useNavigation<CalendarStackNavigationProp>();
   const now = new Date();
+  const theme = useTheme();
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Eventos del día</Text>
+        <View style={[styles.modalContent, {backgroundColor: theme.surface}]}>
+          <Text style={[styles.modalTitle, {color: theme.onBackground}]}>Eventos del día</Text>
 
           {events.map((event) => {
             const isPast = new Date(event.startDate) < now;
 
             return (
               <TouchableOpacity
-                key={event.id}
-                onPress={() => {
-                    onClose();
-                    navigation.navigate('eventDetail', { id: event.id });
-                }}
+            key={event.id}
+            onPress={() => {
+                onClose();
+                navigation.navigate('eventDetail', { id: event.id });
+            }}
+            style={[
+                styles.eventItem,
+                isPast ? styles.pastEventItem : styles.activeEventItem,
+            ]}
+            >
+            <View style={styles.eventRow}>
+                <FontAwesome
+                name={isPast ? 'check-circle' : 'clock-o'}
+                size={18}
+                color={isPast ? '#999' : '#007AFF'}
+                style={{ marginRight: 8 }}
+                />
+                <Text
                 style={[
-                    styles.eventItem,
-                    isPast ? styles.pastEventItem : styles.activeEventItem,
+                    styles.eventTitle,
+                    isPast ? styles.pastEventTitle : styles.activeEventTitle,
                 ]}
                 >
-                <View style={styles.eventRow}>
-                    <FontAwesome
-                    name={isPast ? 'check-circle' : 'clock-o'}
-                    size={18}
-                    color={isPast ? '#999' : '#007AFF'}
-                    style={{ marginRight: 8 }}
-                    />
-                    <Text
-                    style={[
-                        styles.eventTitle,
-                        isPast ? styles.pastEventTitle : styles.activeEventTitle,
-                    ]}
-                    >
-                    {event.title}
-                    </Text>
-                </View>
-                </TouchableOpacity>
+                {event.title}
+                </Text>
+            </View>
+            </TouchableOpacity>
             );
           })}
 

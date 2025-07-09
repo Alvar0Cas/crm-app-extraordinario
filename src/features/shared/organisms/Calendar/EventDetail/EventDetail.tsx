@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert, ScrollView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import ProfileHeader from '../../../molecules/Profile/ProfileHeader';
 import Button from '../../../atoms/Button/Button';
 import Text from '../../../atoms/Text/Text';
 import { useNavigation } from '@react-navigation/native';
 import { CalendarEvent } from '../../../../calendar/domain/entities/event';
 import { ContactViewModel } from '../../../../contactos/presentation/viewmodel/ContactViewModel';
+import { useTheme } from '../../../../../common/hooks/theme';
 
 interface EventDetailViewProps {
   event: CalendarEvent;
 }
 
 export default function EventDetailView({ event }: EventDetailViewProps) {
+  const theme = useTheme();
   const navigation = useNavigation();
   const { fetchContactById, selectedContact, isLoading } = ContactViewModel();
   const [contactName, setContactName] = useState<string>('Cargando...');
@@ -34,8 +36,12 @@ export default function EventDetailView({ event }: EventDetailViewProps) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
+    <ScrollView contentContainerStyle={[styles.scrollContainer, {backgroundColor: theme.surface}]}>
+      
+    <View style={[styles.titleContainer, {backgroundColor: theme.surface}]}>
+      <Text style={styles.title}>{event.title}</Text>
+    </View>
+      <View style={[styles.container, {backgroundColor: theme.surface}]}>
         <ProfileHeader name={event.title} imageUri={''} onBack={handleBack} />
 
         <View style={styles.content}>
@@ -80,6 +86,28 @@ export default function EventDetailView({ event }: EventDetailViewProps) {
 }
 
 const styles = StyleSheet.create({
+  titleContainer: {
+  marginTop: 60, // espacio para que no se encime con el back
+  alignItems: 'center',
+  marginBottom: 16,
+},
+title: {
+  fontSize: 24,
+  fontWeight: '700',
+  color: '#333',
+},
+  backButton: {
+  position: 'absolute',
+  top: -20,
+  left: 10, 
+  padding: 6,
+  zIndex: 10,
+},
+backIcon: {
+  fontSize: 40,
+  color: '#007AFF', 
+  fontWeight: '600',
+},
   scrollContainer: {
     flexGrow: 1,
     backgroundColor: '#F5F5F5',
@@ -136,5 +164,5 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 16,
-  },
+  }
 });
